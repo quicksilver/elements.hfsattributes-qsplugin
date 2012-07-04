@@ -51,10 +51,6 @@
     NSMutableArray *objects=[NSMutableArray arrayWithCapacity:1];
     QSObject *newObject;
 	
-	newObject=[QSObject objectWithName:@"None"];
-	[newObject setObject:[NSNumber numberWithInteger:0] forType:QSNumericType];
-	[objects addObject:newObject];
-	
 	NSMutableDictionary *labelsDict=[NSMutableDictionary dictionaryWithObjectsAndKeys:
 		@"None",@"Label_Name_0",
 		@"Gray",@"Label_Name_1",
@@ -69,24 +65,23 @@
 	
 	NSMutableDictionary *colorsDict=[NSMutableDictionary dictionaryWithObjectsAndKeys:
 		[NSColor clearColor],@"Label_Name_0",
-		[NSColor grayColor],@"Label_Name_1",
-		[NSColor greenColor],@"Label_Name_2",
-		[NSColor purpleColor],@"Label_Name_3",
-		[NSColor blueColor],@"Label_Name_4",
-		[NSColor yellowColor],@"Label_Name_5",
-		[NSColor redColor],@"Label_Name_6",
-		[NSColor orangeColor],@"Label_Name_7",
+		[NSColor colorWithDeviceRed:0.56 green:0.56 blue:0.56 alpha:1.0],@"Label_Name_1",
+		[NSColor colorWithDeviceRed:0.70 green:0.90 blue:0.25 alpha:1.0],@"Label_Name_2",
+		[NSColor colorWithDeviceRed:0.79 green:0.55 blue:0.84 alpha:1.0],@"Label_Name_3",
+		[NSColor colorWithDeviceRed:0.40 green:0.67 blue:1.0 alpha:1.0],@"Label_Name_4",
+		[NSColor colorWithDeviceRed:0.95 green:0.94 blue:0.44 alpha:1.0],@"Label_Name_5",
+		[NSColor colorWithDeviceRed:1.0 green:0.43 blue:0.40 alpha:1.0],@"Label_Name_6",
+		[NSColor colorWithDeviceRed:1.0 green:0.73 blue:0.24 alpha:1.0],@"Label_Name_7",
 		nil];
-	
+
 	[labelsDict addEntriesFromDictionary:
 		[(NSDictionary *)CFPreferencesCopyMultiple((CFArrayRef)[labelsDict allKeys], (CFStringRef) @"com.apple.Labels", kCFPreferencesCurrentUser, kCFPreferencesAnyHost) autorelease]];
-	
-	NSUInteger i=0;
-	for (i=1;i<8;i++){
+	NSUInteger i;
+	for (i = 0; i < 8; i++){
 		NSString *entry=[NSString stringWithFormat:@"Label_Name_%lu",(unsigned long)i];
 		newObject=[QSObject objectWithName:[labelsDict objectForKey:entry]];
 		[newObject setObject:[NSNumber numberWithInteger:i] forType:QSNumericType];
-		[newObject setObject:[NSArchiver archivedDataWithRootObject:[colorsDict objectForKey:entry]] forType:NSColorPboardType];
+		[newObject setObject:[NSKeyedArchiver archivedDataWithRootObject:[colorsDict objectForKey:entry]] forType:NSColorPboardType];
 		[newObject setPrimaryType:NSColorPboardType];
 		[objects addObject:newObject];
 	}
@@ -274,18 +269,25 @@
 
 - (QSObject *)setIconForFile:(QSObject *)dObject to:(QSObject *)iObject{
 	NSWorkspace *w=[NSWorkspace sharedWorkspace];
-	NSString *sourcePath=[iObject singleFilePath];
-	NSImage *icon=[[[NSImage alloc]initWithContentsOfFile:sourcePath]autorelease];
-	if (!icon)icon=[w iconForFile:sourcePath];
-	
-	NSEnumerator *pathEnumerator=[dObject enumeratorForType:QSFilePathType];
-	NSString *path;
-    while (path=[pathEnumerator nextObject]){
+    NSImage *icon;
+
+    if (iObject) {
+        NSString *sourcePath=[iObject singleFilePath];
+        icon=[[[NSImage alloc]initWithContentsOfFile:sourcePath]autorelease];
+        if (!icon) icon=[w iconForFile:sourcePath];
+	}
+    for (NSString *path in [dObject validPaths]){
+        if (!iObject) {
+            icon =[NSImage imageWithPreviewOfFileAtPath:path ofSize:QSMaxIconSize asIcon:YES];
+        }
         [[NSWorkspace sharedWorkspace] setIcon:icon forFile:path options:NSExclude10_4ElementsIconCreationOption];
 		[[NSWorkspace sharedWorkspace] noteFileSystemChanged:path ];
     }
     return nil;
 }
 
+- (QSObject *)clearIconForFile:(QSObject *)dObject {
+    return [self setIconForFile:dObject to:nil];
+}
 
 @end

@@ -19,9 +19,26 @@
 	<key>CFBundleShortVersionString</key>
 	<string>1.0.0</string>
 	<key>CFBundleVersion</key>
-	<string>CF</string>
+	<string>DC</string>
 	<key>QSActions</key>
 	<dict>
+		<key>QSClearCustomFileIconAction</key>
+		<dict>
+			<key>actionClass</key>
+			<string>QSHFSAttributeActions</string>
+			<key>actionSelector</key>
+			<string>clearIconForFile:</string>
+			<key>directTypes</key>
+			<array>
+				<string>NSFilenamesPboardType</string>
+			</array>
+			<key>icon</key>
+			<string>com.apple.finder</string>
+			<key>name</key>
+			<string>Clear Custom Icon</string>
+			<key>validatesObjects</key>
+			<false/>
+		</dict>
 		<key>QSHFSLockAction</key>
 		<dict>
 			<key>actionClass</key>
