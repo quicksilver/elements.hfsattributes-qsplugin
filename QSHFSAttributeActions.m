@@ -16,16 +16,35 @@
 
 - (NSArray *)validActionsForDirectObject:(QSObject *)dObject indirectObject:(QSObject *)iObject{
     NSArray *paths=[dObject validPaths];
-    NSMutableArray *newActions=[NSMutableArray arrayWithCapacity:1];
+    NSMutableSet *newActions=[NSMutableSet setWithCapacity:2];
     if (paths){
-        [newActions addObject:kHFSInvisibleAction];
-        [newActions addObject:kHFSVisibleAction];
-        [newActions addObject:kHFSLockAction];
-        [newActions addObject:kHFSUnlockAction];
-        [newActions addObject:kHFSSetLabelAction];
-		[newActions addObject:@"QSSetFileCommentAction"];
-    }        
-    return newActions;
+        for (NSString *path in paths) {
+            // check if the file is already visible/invisible, locked/unlocked
+            FSRef theRef;
+            FSCatalogInfo catInfo;
+            OSErr err=noErr;
+            err=FSPathMakeRef((const UInt8 *)[path UTF8String],&theRef,NULL);
+            // check for err here. noErr==0
+            err=FSGetCatalogInfo(&theRef,kFSCatInfoNodeFlags | kFSCatInfoFinderInfo,&catInfo,NULL,NULL,NULL);
+
+            // File is locked?
+            if (catInfo.nodeFlags & kFSNodeLockedMask) {
+                [newActions addObject:kHFSUnlockAction];
+            } else {
+                [newActions addObject:kHFSLockAction];
+            }
+            
+            FileInfo* info = (FileInfo*)&catInfo.finderInfo;
+
+            // file is visible?
+            if (info->finderFlags & kIsInvisible) {
+                [newActions addObject:kHFSVisibleAction];
+            } else {
+                [newActions addObject:kHFSInvisibleAction];
+            }
+        }
+    }
+    return [newActions allObjects];
 }
 
 - (NSArray *)labelObjectsArray{    
@@ -108,7 +127,7 @@
     
     status = FSSetCatalogInfo(& fsRef, kFSCatInfoFinderInfo, &catalogInfo);
     
-    return 1;
+    return YES;
 }
 
 - (BOOL)setPath:(NSString *)path isLocked:(BOOL)locked{
@@ -270,5 +289,3 @@
 
 
 @end
-
-

@@ -4,6 +4,8 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
+	<key>CFBundleDisplayName</key>
+	<string>File Attribute Actions</string>
 	<key>CFBundleExecutable</key>
 	<string>File Attribute Actions</string>
 	<key>CFBundleIdentifier</key>
@@ -14,12 +16,10 @@
 	<string>File Attribute Actions</string>
 	<key>CFBundlePackageType</key>
 	<string>BNDL</string>
-	<key>CFBundleDisplayName</key>
-	<string>File Attribute Actions</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0.0</string>
 	<key>CFBundleVersion</key>
-	<string>BD</string>
+	<string>CF</string>
 	<key>QSActions</key>
 	<dict>
 		<key>QSHFSLockAction</key>
@@ -32,12 +32,10 @@
 			<array>
 				<string>NSFilenamesPboardType</string>
 			</array>
-			<key>icon</key>
-			<string>Display</string>
 			<key>name</key>
 			<string>Lock File</string>
 			<key>validatesObjects</key>
-			<false/>
+			<true/>
 		</dict>
 		<key>QSHFSMakeInvisibleAction</key>
 		<dict>
@@ -49,12 +47,10 @@
 			<array>
 				<string>NSFilenamesPboardType</string>
 			</array>
-			<key>icon</key>
-			<string>Display</string>
 			<key>name</key>
 			<string>Make Invisible (hide)</string>
 			<key>validatesObjects</key>
-			<false/>
+			<true/>
 		</dict>
 		<key>QSHFSMakeVisibleAction</key>
 		<dict>
@@ -66,12 +62,10 @@
 			<array>
 				<string>NSFilenamesPboardType</string>
 			</array>
-			<key>icon</key>
-			<string>Display</string>
 			<key>name</key>
 			<string>Make Visible (Show)...</string>
 			<key>validatesObjects</key>
-			<false/>
+			<true/>
 		</dict>
 		<key>QSHFSSetLabelAction</key>
 		<dict>
@@ -83,8 +77,6 @@
 			<array>
 				<string>NSFilenamesPboardType</string>
 			</array>
-			<key>icon</key>
-			<string>Display</string>
 			<key>name</key>
 			<string>Set Label...</string>
 			<key>validatesObjects</key>
@@ -100,12 +92,10 @@
 			<array>
 				<string>NSFilenamesPboardType</string>
 			</array>
-			<key>icon</key>
-			<string>Display</string>
 			<key>name</key>
 			<string>Unlock File</string>
 			<key>validatesObjects</key>
-			<false/>
+			<true/>
 		</dict>
 		<key>QSSetFileCommentAction</key>
 		<dict>
