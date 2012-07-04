@@ -14,10 +14,12 @@
 	<string>File Attribute Actions</string>
 	<key>CFBundlePackageType</key>
 	<string>BNDL</string>
+	<key>CFBundleDisplayName</key>
+	<string>File Attribute Actions</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.5.0</string>
+	<string>1.0.0</string>
 	<key>CFBundleVersion</key>
-	<string>B9</string>
+	<string>BD</string>
 	<key>QSActions</key>
 	<dict>
 		<key>QSHFSLockAction</key>

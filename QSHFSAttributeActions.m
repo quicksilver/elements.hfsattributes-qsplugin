@@ -33,7 +33,7 @@
     QSObject *newObject;
 	
 	newObject=[QSObject objectWithName:@"None"];
-	[newObject setObject:[NSNumber numberWithInt:0] forType:QSNumericType];
+	[newObject setObject:[NSNumber numberWithInteger:0] forType:QSNumericType];
 	[objects addObject:newObject];
 	
 	NSMutableDictionary *labelsDict=[NSMutableDictionary dictionaryWithObjectsAndKeys:
@@ -62,11 +62,11 @@
 	[labelsDict addEntriesFromDictionary:
 		[(NSDictionary *)CFPreferencesCopyMultiple((CFArrayRef)[labelsDict allKeys], (CFStringRef) @"com.apple.Labels", kCFPreferencesCurrentUser, kCFPreferencesAnyHost) autorelease]];
 	
-	int i=0;
+	NSUInteger i=0;
 	for (i=1;i<8;i++){
-		NSString *entry=[NSString stringWithFormat:@"Label_Name_%d",i];
+		NSString *entry=[NSString stringWithFormat:@"Label_Name_%lu",(unsigned long)i];
 		newObject=[QSObject objectWithName:[labelsDict objectForKey:entry]];
-		[newObject setObject:[NSNumber numberWithInt:i] forType:QSNumericType];
+		[newObject setObject:[NSNumber numberWithInteger:i] forType:QSNumericType];
 		[newObject setObject:[NSArchiver archivedDataWithRootObject:[colorsDict objectForKey:entry]] forType:NSColorPboardType];
 		[newObject setPrimaryType:NSColorPboardType];
 		[objects addObject:newObject];
@@ -91,7 +91,7 @@
     OSStatus status = noErr;
     FSRef fsRef;
     
-    status=FSPathMakeRef([path UTF8String],&fsRef,NULL);
+    status=FSPathMakeRef((const UInt8 *)[path UTF8String],&fsRef,NULL);
     
     if (status != noErr) return 0;
     
@@ -115,7 +115,7 @@
     FSRef theRef;
     FSCatalogInfo catInfo;
     OSErr err=noErr;
-    err=FSPathMakeRef([path UTF8String],&theRef,NULL);
+    err=FSPathMakeRef((const UInt8 *)[path UTF8String],&theRef,NULL);
     // check for err here. noErr==0
     err=FSGetCatalogInfo(&theRef,kFSCatInfoNodeFlags,&catInfo,NULL,NULL,NULL);
     // check for err here.
@@ -175,15 +175,12 @@
 
 // *** purify
 
-- (void) setLabel:(int)label forPath:(NSString *)path{
+- (void) setLabel:(NSInteger)label forPath:(NSString *)path{
     FSCatalogInfo info;
 	FSRef par;
-	FSRef ref;
     Boolean dir = false;
     
-	if (FSPathMakeRef([path fileSystemRepresentation],&par,&dir) == noErr) {
-		HFSUniStr255 fork = {0,{0}};
-		SInt16 refnum = kResFileNotOpened;
+	if (FSPathMakeRef((const UInt8 *)[path fileSystemRepresentation],&par,&dir) == noErr) {
         
         /* Get the Finder Catalog Info */
         OSErr err = FSGetCatalogInfo(&par,
@@ -216,7 +213,6 @@
          7 is Orange
          */
         
-        //int label = label;
         *flags = ( *flags &~ kColor) | ( (label << 1) & kColor );
         
         /* Set the Finder Catalog Info Back */
@@ -236,7 +232,7 @@
     NSString* path;
 	NSNumber *value=[iObject objectForType:QSNumericType];
 	if (!value) return nil;
-	int label=[value intValue];
+	NSInteger label=[value integerValue];
 	//NSLog(@"setlabel %d",label);
     NSEnumerator *pathEnumerator=[dObject enumeratorForType:QSFilePathType];
     while (path=[pathEnumerator nextObject]){
