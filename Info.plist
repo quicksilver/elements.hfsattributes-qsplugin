@@ -19,7 +19,7 @@
 	<key>CFBundleShortVersionString</key>
 	<string>1.0.0</string>
 	<key>CFBundleVersion</key>
-	<string>DC</string>
+	<string>DD</string>
 	<key>QSActions</key>
 	<dict>
 		<key>QSClearCustomFileIconAction</key>
@@ -159,6 +159,39 @@
 		</array>
 		<key>description</key>
 		<string>File locking, labeling and visibility actions</string>
+		<key>extendedDescription</key>
+		<string>&lt;h2&gt;File Attribute Actions&lt;/h2&gt;
+
+&lt;p&gt;The File Attribute Actions plugin adds actions to Quicksilver that enable you to alter the attributes of system files on your computer. This includes, altering the visibility of files and folders, locking files and folders, and setting labels, comments and icons of files.&lt;/p&gt;
+
+&lt;h2&gt;Actions&lt;/h2&gt;
+
+&lt;h3&gt;Lock/Unlock File&lt;/h3&gt;
+
+&lt;p&gt;These actions lock or unlock the file(s) in Quicksilver's 1st pane. Locking a file is equivalent to ticking the 'Lock' checkbox in the 'Get Info' panel of a file, and makes the file or folder read only.&lt;br /&gt;
+This action works with the '&lt;a href="http://qsapp.com/wiki/Comma_Trick"&gt;comma trick&lt;/a&gt;'.&lt;/p&gt;
+
+&lt;h3&gt;Make Visible (show) &amp; Make Invisible (hide)&lt;/h3&gt;
+
+&lt;p&gt;These actions alter the display of files or folders within Finder. Making an item invisible means it does not display in Finder. An example of an invisible folder is the &lt;code&gt;~/Library&lt;/code&gt; folder. Works with the 'comma trick'.&lt;/p&gt;
+
+
+&lt;h3&gt;Set Icon&lt;/h3&gt;
+
+&lt;p&gt;Allows you to alter the icon that is displayed by Finder for the file or folder. To un-set an icon, open the file in Finder and select 'Get Info' (⌘I). From here you can 'delete' the icon. Works with the 'comma trick'.&lt;/p&gt;
+
+&lt;h3&gt;Clear Custom Icon&lt;/h3&gt;
+
+&lt;p&gt;Clears the custom icon set for the selected file(s). Works with the 'comma trick.&lt;/p&gt;
+
+&lt;h3&gt;Set Label...&lt;/h3&gt;
+
+&lt;p&gt;Sets the Finder label to the specified colour in Quicksilver's 3rd pane. To clear the colour label of a file, select 'None' in Quicksilver's 3rd pane.&lt;/p&gt;
+
+
+&lt;h3&gt;Set File Comment&lt;/h3&gt;
+
+&lt;p&gt;Sets the 'Spotlight comments' as shown in a file's 'Get Info' panel.&lt;/p&gt;</string>
 		<key>icon</key>
 		<string>GenericDocumentIcon</string>
 	</dict>
