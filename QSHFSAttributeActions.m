@@ -9,7 +9,7 @@
 # define kHFSLockAction @"QSHFSLockAction"
 # define kHFSUnlockAction @"QSHFSUnlockAction"
 # define kHFSSetLabelAction @"QSHFSSetLabelAction"
-
+# define kClearCustomIconAction @"QSClearCustomFileIconAction"
 
 
 @implementation QSHFSAttributeActions
@@ -42,6 +42,7 @@
             } else {
                 [newActions addObject:kHFSInvisibleAction];
             }
+            
         }
     }
     return [newActions allObjects];
@@ -260,15 +261,15 @@
 
     if (iObject) {
         NSString *sourcePath=[iObject singleFilePath];
-        icon=[[[NSImage alloc]initWithContentsOfFile:sourcePath]autorelease];
+        icon=[[[NSImage alloc] initWithContentsOfFile:sourcePath]autorelease];
         if (!icon) icon=[w iconForFile:sourcePath];
-	}
+	} else {
+        // setting the icon to 'nil' clears the custom icon
+        icon = nil;
+    }
     for (NSString *path in [dObject validPaths]){
-        if (!iObject) {
-            icon =[NSImage imageWithPreviewOfFileAtPath:path ofSize:QSMaxIconSize asIcon:YES];
-        }
-        [[NSWorkspace sharedWorkspace] setIcon:icon forFile:path options:NSExclude10_4ElementsIconCreationOption];
-		[[NSWorkspace sharedWorkspace] noteFileSystemChanged:path ];
+        [w setIcon:icon forFile:path options:0];
+		[w noteFileSystemChanged:path ];
     }
     return nil;
 }
