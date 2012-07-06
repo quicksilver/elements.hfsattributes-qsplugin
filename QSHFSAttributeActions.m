@@ -92,10 +92,7 @@
 - (NSArray *)validIndirectObjectsForAction:(NSString *)action directObject:(QSObject *)dObject{	
 	if ([action isEqualToString:kHFSSetLabelAction]){
 		return [self labelObjectsArray];
-	}else if ([action isEqualToString:@"QSSetFileCommentAction"]){
-		NSString *comment=[[NSWorkspace sharedWorkspace]commentForFile:[dObject singleFilePath]];
-		return [NSArray arrayWithObject:[QSObject textProxyObjectWithDefaultValue:comment?comment:@""]];
-	}
+    }
 	return nil;
 }
 
@@ -256,16 +253,6 @@
     return nil;
 }
 
-
-- (QSObject *)setCommentForFile:(QSObject *)dObject to:(QSObject *)iObject{
-    NSEnumerator *pathEnumerator=[dObject enumeratorForType:QSFilePathType];
-	NSString *newComment=[iObject stringValue];
-	NSString *path;
-    while (path=[pathEnumerator nextObject]){
-        [[NSWorkspace sharedWorkspace] setComment:newComment forFile:path];
-    }
-    return nil;
-}
 
 - (QSObject *)setIconForFile:(QSObject *)dObject to:(QSObject *)iObject{
 	NSWorkspace *w=[NSWorkspace sharedWorkspace];
