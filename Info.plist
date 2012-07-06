@@ -19,7 +19,7 @@
 	<key>CFBundleShortVersionString</key>
 	<string>1.0.0</string>
 	<key>CFBundleVersion</key>
-	<string>DD</string>
+	<string>DE</string>
 	<key>QSActions</key>
 	<dict>
 		<key>QSClearCustomFileIconAction</key>
@@ -80,7 +80,7 @@
 				<string>NSFilenamesPboardType</string>
 			</array>
 			<key>name</key>
-			<string>Make Visible (Show)...</string>
+			<string>Make Visible (Show)</string>
 			<key>validatesObjects</key>
 			<true/>
 		</dict>
@@ -113,23 +113,6 @@
 			<string>Unlock File</string>
 			<key>validatesObjects</key>
 			<true/>
-		</dict>
-		<key>QSSetFileCommentAction</key>
-		<dict>
-			<key>actionClass</key>
-			<string>QSHFSAttributeActions</string>
-			<key>actionSelector</key>
-			<string>setCommentForFile:to:</string>
-			<key>directTypes</key>
-			<array>
-				<string>NSFilenamesPboardType</string>
-			</array>
-			<key>icon</key>
-			<string>com.apple.finder</string>
-			<key>name</key>
-			<string>Set Comment...</string>
-			<key>validatesObjects</key>
-			<false/>
 		</dict>
 		<key>QSSetFileIconAction</key>
 		<dict>
@@ -176,13 +159,13 @@ This action works with the '&lt;a href="http://qsapp.com/wiki/Comma_Trick"&gt;co
 &lt;p&gt;These actions alter the display of files or folders within Finder. Making an item invisible means it does not display in Finder. An example of an invisible folder is the &lt;code&gt;~/Library&lt;/code&gt; folder. Works with the 'comma trick'.&lt;/p&gt;
 
 
-&lt;h3&gt;Set Icon&lt;/h3&gt;
+&lt;h3&gt;Set Icon...&lt;/h3&gt;
 
 &lt;p&gt;Allows you to alter the icon that is displayed by Finder for the file or folder. To un-set an icon, open the file in Finder and select 'Get Info' (⌘I). From here you can 'delete' the icon. Works with the 'comma trick'.&lt;/p&gt;
 
 &lt;h3&gt;Clear Custom Icon&lt;/h3&gt;
 
-&lt;p&gt;Clears the custom icon set for the selected file(s). Works with the 'comma trick.&lt;/p&gt;
+&lt;p&gt;Clears the custom icon set for the selected file(s). Works with the 'comma trick'.&lt;/p&gt;
 
 &lt;h3&gt;Set Label...&lt;/h3&gt;
 
