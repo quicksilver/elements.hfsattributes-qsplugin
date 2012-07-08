@@ -9,32 +9,48 @@
 # define kHFSLockAction @"QSHFSLockAction"
 # define kHFSUnlockAction @"QSHFSUnlockAction"
 # define kHFSSetLabelAction @"QSHFSSetLabelAction"
-
+# define kClearCustomIconAction @"QSClearCustomFileIconAction"
 
 
 @implementation QSHFSAttributeActions
 
 - (NSArray *)validActionsForDirectObject:(QSObject *)dObject indirectObject:(QSObject *)iObject{
     NSArray *paths=[dObject validPaths];
-    NSMutableArray *newActions=[NSMutableArray arrayWithCapacity:1];
+    NSMutableSet *newActions=[NSMutableSet setWithCapacity:2];
     if (paths){
-        [newActions addObject:kHFSInvisibleAction];
-        [newActions addObject:kHFSVisibleAction];
-        [newActions addObject:kHFSLockAction];
-        [newActions addObject:kHFSUnlockAction];
-        [newActions addObject:kHFSSetLabelAction];
-		[newActions addObject:@"QSSetFileCommentAction"];
-    }        
-    return newActions;
+        for (NSString *path in paths) {
+            // check if the file is already visible/invisible, locked/unlocked
+            FSRef theRef;
+            FSCatalogInfo catInfo;
+            OSErr err=noErr;
+            err=FSPathMakeRef((const UInt8 *)[path UTF8String],&theRef,NULL);
+            // check for err here. noErr==0
+            err=FSGetCatalogInfo(&theRef,kFSCatInfoNodeFlags | kFSCatInfoFinderInfo,&catInfo,NULL,NULL,NULL);
+
+            // File is locked?
+            if (catInfo.nodeFlags & kFSNodeLockedMask) {
+                [newActions addObject:kHFSUnlockAction];
+            } else {
+                [newActions addObject:kHFSLockAction];
+            }
+            
+            FileInfo* info = (FileInfo*)&catInfo.finderInfo;
+
+            // file is visible?
+            if (info->finderFlags & kIsInvisible) {
+                [newActions addObject:kHFSVisibleAction];
+            } else {
+                [newActions addObject:kHFSInvisibleAction];
+            }
+            
+        }
+    }
+    return [newActions allObjects];
 }
 
 - (NSArray *)labelObjectsArray{    
     NSMutableArray *objects=[NSMutableArray arrayWithCapacity:1];
     QSObject *newObject;
-	
-	newObject=[QSObject objectWithName:@"None"];
-	[newObject setObject:[NSNumber numberWithInt:0] forType:QSNumericType];
-	[objects addObject:newObject];
 	
 	NSMutableDictionary *labelsDict=[NSMutableDictionary dictionaryWithObjectsAndKeys:
 		@"None",@"Label_Name_0",
@@ -50,24 +66,23 @@
 	
 	NSMutableDictionary *colorsDict=[NSMutableDictionary dictionaryWithObjectsAndKeys:
 		[NSColor clearColor],@"Label_Name_0",
-		[NSColor grayColor],@"Label_Name_1",
-		[NSColor greenColor],@"Label_Name_2",
-		[NSColor purpleColor],@"Label_Name_3",
-		[NSColor blueColor],@"Label_Name_4",
-		[NSColor yellowColor],@"Label_Name_5",
-		[NSColor redColor],@"Label_Name_6",
-		[NSColor orangeColor],@"Label_Name_7",
+		[NSColor colorWithDeviceRed:0.56 green:0.56 blue:0.56 alpha:1.0],@"Label_Name_1",
+		[NSColor colorWithDeviceRed:0.70 green:0.90 blue:0.25 alpha:1.0],@"Label_Name_2",
+		[NSColor colorWithDeviceRed:0.79 green:0.55 blue:0.84 alpha:1.0],@"Label_Name_3",
+		[NSColor colorWithDeviceRed:0.40 green:0.67 blue:1.0 alpha:1.0],@"Label_Name_4",
+		[NSColor colorWithDeviceRed:0.95 green:0.94 blue:0.44 alpha:1.0],@"Label_Name_5",
+		[NSColor colorWithDeviceRed:1.0 green:0.43 blue:0.40 alpha:1.0],@"Label_Name_6",
+		[NSColor colorWithDeviceRed:1.0 green:0.73 blue:0.24 alpha:1.0],@"Label_Name_7",
 		nil];
-	
+
 	[labelsDict addEntriesFromDictionary:
 		[(NSDictionary *)CFPreferencesCopyMultiple((CFArrayRef)[labelsDict allKeys], (CFStringRef) @"com.apple.Labels", kCFPreferencesCurrentUser, kCFPreferencesAnyHost) autorelease]];
-	
-	int i=0;
-	for (i=1;i<8;i++){
-		NSString *entry=[NSString stringWithFormat:@"Label_Name_%d",i];
+	NSUInteger i;
+	for (i = 0; i < 8; i++){
+		NSString *entry=[NSString stringWithFormat:@"Label_Name_%lu",(unsigned long)i];
 		newObject=[QSObject objectWithName:[labelsDict objectForKey:entry]];
-		[newObject setObject:[NSNumber numberWithInt:i] forType:QSNumericType];
-		[newObject setObject:[NSArchiver archivedDataWithRootObject:[colorsDict objectForKey:entry]] forType:NSColorPboardType];
+		[newObject setObject:[NSNumber numberWithInteger:i] forType:QSNumericType];
+		[newObject setObject:[NSKeyedArchiver archivedDataWithRootObject:[colorsDict objectForKey:entry]] forType:NSColorPboardType];
 		[newObject setPrimaryType:NSColorPboardType];
 		[objects addObject:newObject];
 	}
@@ -78,10 +93,7 @@
 - (NSArray *)validIndirectObjectsForAction:(NSString *)action directObject:(QSObject *)dObject{	
 	if ([action isEqualToString:kHFSSetLabelAction]){
 		return [self labelObjectsArray];
-	}else if ([action isEqualToString:@"QSSetFileCommentAction"]){
-		NSString *comment=[[NSWorkspace sharedWorkspace]commentForFile:[dObject singleFilePath]];
-		return [NSArray arrayWithObject:[QSObject textProxyObjectWithDefaultValue:comment?comment:@""]];
-	}
+    }
 	return nil;
 }
 
@@ -91,7 +103,7 @@
     OSStatus status = noErr;
     FSRef fsRef;
     
-    status=FSPathMakeRef([path UTF8String],&fsRef,NULL);
+    status=FSPathMakeRef((const UInt8 *)[path UTF8String],&fsRef,NULL);
     
     if (status != noErr) return 0;
     
@@ -108,14 +120,14 @@
     
     status = FSSetCatalogInfo(& fsRef, kFSCatInfoFinderInfo, &catalogInfo);
     
-    return 1;
+    return YES;
 }
 
 - (BOOL)setPath:(NSString *)path isLocked:(BOOL)locked{
     FSRef theRef;
     FSCatalogInfo catInfo;
     OSErr err=noErr;
-    err=FSPathMakeRef([path UTF8String],&theRef,NULL);
+    err=FSPathMakeRef((const UInt8 *)[path UTF8String],&theRef,NULL);
     // check for err here. noErr==0
     err=FSGetCatalogInfo(&theRef,kFSCatInfoNodeFlags,&catInfo,NULL,NULL,NULL);
     // check for err here.
@@ -175,15 +187,12 @@
 
 // *** purify
 
-- (void) setLabel:(int)label forPath:(NSString *)path{
+- (void) setLabel:(NSInteger)label forPath:(NSString *)path{
     FSCatalogInfo info;
 	FSRef par;
-	FSRef ref;
     Boolean dir = false;
     
-	if (FSPathMakeRef([path fileSystemRepresentation],&par,&dir) == noErr) {
-		HFSUniStr255 fork = {0,{0}};
-		SInt16 refnum = kResFileNotOpened;
+	if (FSPathMakeRef((const UInt8 *)[path fileSystemRepresentation],&par,&dir) == noErr) {
         
         /* Get the Finder Catalog Info */
         OSErr err = FSGetCatalogInfo(&par,
@@ -216,7 +225,6 @@
          7 is Orange
          */
         
-        //int label = label;
         *flags = ( *flags &~ kColor) | ( (label << 1) & kColor );
         
         /* Set the Finder Catalog Info Back */
@@ -236,7 +244,7 @@
     NSString* path;
 	NSNumber *value=[iObject objectForType:QSNumericType];
 	if (!value) return nil;
-	int label=[value intValue];
+	NSInteger label=[value integerValue];
 	//NSLog(@"setlabel %d",label);
     NSEnumerator *pathEnumerator=[dObject enumeratorForType:QSFilePathType];
     while (path=[pathEnumerator nextObject]){
@@ -247,32 +255,27 @@
 }
 
 
-- (QSObject *)setCommentForFile:(QSObject *)dObject to:(QSObject *)iObject{
-    NSEnumerator *pathEnumerator=[dObject enumeratorForType:QSFilePathType];
-	NSString *newComment=[iObject stringValue];
-	NSString *path;
-    while (path=[pathEnumerator nextObject]){
-        [[NSWorkspace sharedWorkspace] setComment:newComment forFile:path];
-    }
-    return nil;
-}
-
 - (QSObject *)setIconForFile:(QSObject *)dObject to:(QSObject *)iObject{
 	NSWorkspace *w=[NSWorkspace sharedWorkspace];
-	NSString *sourcePath=[iObject singleFilePath];
-	NSImage *icon=[[[NSImage alloc]initWithContentsOfFile:sourcePath]autorelease];
-	if (!icon)icon=[w iconForFile:sourcePath];
-	
-	NSEnumerator *pathEnumerator=[dObject enumeratorForType:QSFilePathType];
-	NSString *path;
-    while (path=[pathEnumerator nextObject]){
-        [[NSWorkspace sharedWorkspace] setIcon:icon forFile:path options:NSExclude10_4ElementsIconCreationOption];
-		[[NSWorkspace sharedWorkspace] noteFileSystemChanged:path ];
+    NSImage *icon;
+
+    if (iObject) {
+        NSString *sourcePath=[iObject singleFilePath];
+        icon=[[[NSImage alloc] initWithContentsOfFile:sourcePath]autorelease];
+        if (!icon) icon=[w iconForFile:sourcePath];
+	} else {
+        // setting the icon to 'nil' clears the custom icon
+        icon = nil;
+    }
+    for (NSString *path in [dObject validPaths]){
+        [w setIcon:icon forFile:path options:0];
+		[w noteFileSystemChanged:path ];
     }
     return nil;
 }
 
+- (QSObject *)clearIconForFile:(QSObject *)dObject {
+    return [self setIconForFile:dObject to:nil];
+}
 
 @end
-
-
