@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleDisplayName</key>
-	<string>File Attribute Actions</string>
+	<string>File Attribute Plugin</string>
 	<key>CFBundleExecutable</key>
 	<string>File Attribute Actions</string>
 	<key>CFBundleIdentifier</key>
@@ -13,13 +13,13 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>File Attribute Actions</string>
+	<string>File Attribute Plugin</string>
 	<key>CFBundlePackageType</key>
 	<string>BNDL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0.0</string>
+	<string>1.1.0</string>
 	<key>CFBundleVersion</key>
-	<string>E4</string>
+	<string>E5</string>
 	<key>QSActions</key>
 	<dict>
 		<key>QSClearCustomFileIconAction</key>

@@ -17,32 +17,27 @@
 - (NSArray *)validActionsForDirectObject:(QSObject *)dObject indirectObject:(QSObject *)iObject{
     NSArray *paths=[dObject validPaths];
     NSMutableSet *newActions=[NSMutableSet setWithCapacity:2];
-    if (paths){
-        for (NSString *path in paths) {
-            // check if the file is already visible/invisible, locked/unlocked
-            FSRef theRef;
-            FSCatalogInfo catInfo;
-            OSErr err=noErr;
-            err=FSPathMakeRef((const UInt8 *)[path UTF8String],&theRef,NULL);
-            // check for err here. noErr==0
-            err=FSGetCatalogInfo(&theRef,kFSCatInfoNodeFlags | kFSCatInfoFinderInfo,&catInfo,NULL,NULL,NULL);
-
-            // File is locked?
-            if (catInfo.nodeFlags & kFSNodeLockedMask) {
-                [newActions addObject:kHFSUnlockAction];
-            } else {
-                [newActions addObject:kHFSLockAction];
+    @autoreleasepool {
+        if (paths){
+            for (NSString *path in paths) {
+                NSURL *fileUrl = [NSURL fileURLWithPath:path];
+                NSDictionary *info = [fileUrl resourceValuesForKeys:@[NSURLIsHiddenKey,NSURLIsWritableKey] error:nil];
+                
+                // File is locked?
+                if ([[info objectForKey:NSURLIsWritableKey] boolValue]) {
+                    [newActions addObject:kHFSLockAction];
+                } else {
+                    [newActions addObject:kHFSUnlockAction];
+                }
+                                
+                // file is visible?
+                if ([[info objectForKey:NSURLIsHiddenKey] boolValue]) {
+                    [newActions addObject:kHFSVisibleAction];
+                } else {
+                    [newActions addObject:kHFSInvisibleAction];
+                }
+                
             }
-            
-            FileInfo* info = (FileInfo*)&catInfo.finderInfo;
-
-            // file is visible?
-            if (info->finderFlags & kIsInvisible) {
-                [newActions addObject:kHFSVisibleAction];
-            } else {
-                [newActions addObject:kHFSInvisibleAction];
-            }
-            
         }
     }
     return [newActions allObjects];
