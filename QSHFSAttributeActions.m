@@ -1,8 +1,4 @@
-
-
 #import "QSHFSAttributeActions.h"
-
-
 
 # define kHFSInvisibleAction @"QSHFSMakeInvisibleAction"
 # define kHFSVisibleAction @"QSHFSMakeVisibleAction"

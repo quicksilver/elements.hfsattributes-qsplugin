@@ -1,0 +1,38 @@
+## File Attribute Actions ##
+
+The File Attribute Actions plugin adds actions to Quicksilver that enable you
+to alter the attributes of system files on your computer. This includes,
+altering the visibility of files and folders, locking files and folders, and
+setting labels, comments and icons of files.
+
+## Actions ##
+
+### Lock/Unlock File ###
+
+These actions lock or unlock the file(s) in Quicksilver's 1st pane. Locking a
+file is equivalent to ticking the 'Lock' checkbox in the 'Get Info' panel of a
+file, and makes the file or folder read only.
+
+This action works with the '[comma trick](http://qsapp.com/wiki/Comma_Trick)'.
+
+### Make Visible (show) & Make Invisible (hide) ###
+
+These actions alter the display of files or folders within Finder. Making an
+item invisible means it does not display in Finder. An example of an invisible
+folder is the `~/Library` folder. Works with the 'comma trick'.
+
+### Set Icon… ###
+
+Allows you to alter the icon that is displayed by Finder for the file or
+folder. To un-set an icon, open the file in Finder and select 'Get Info' (⌘I).
+From here you can 'delete' the icon. Works with the 'comma trick'.
+
+### Clear Custom Icon ###
+
+Clears the custom icon set for the selected file(s). Works with the 'comma
+trick'.
+
+### Set Label… ###
+
+Sets the Finder label to the specified colour in Quicksilver's 3rd pane. To
+clear the colour label of a file, select 'None' in Quicksilver's 3rd pane.
