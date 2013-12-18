@@ -4,7 +4,6 @@
 # define kHFSVisibleAction @"QSHFSMakeVisibleAction"
 # define kHFSLockAction @"QSHFSLockAction"
 # define kHFSUnlockAction @"QSHFSUnlockAction"
-# define kHFSSetLabelAction @"QSHFSSetLabelAction"
 # define kClearCustomIconAction @"QSClearCustomFileIconAction"
 
 
@@ -80,15 +79,6 @@
 	
 	return objects;
 }
-
-- (NSArray *)validIndirectObjectsForAction:(NSString *)action directObject:(QSObject *)dObject{	
-	if ([action isEqualToString:kHFSSetLabelAction]){
-		return [self labelObjectsArray];
-    }
-	return nil;
-}
-
-
 
 - (BOOL)setPath:(NSString *)path isVisible:(BOOL)visible{
     OSStatus status = noErr;
@@ -172,79 +162,6 @@
     }
     return nil;
 }
-
-
-
-
-// *** purify
-
-- (void) setLabel:(NSInteger)label forPath:(NSString *)path{
-    FSCatalogInfo info;
-	FSRef par;
-    Boolean dir = false;
-    
-	if (FSPathMakeRef((const UInt8 *)[path fileSystemRepresentation],&par,&dir) == noErr) {
-        
-        /* Get the Finder Catalog Info */
-        OSErr err = FSGetCatalogInfo(&par,
-                                     kFSCatInfoContentMod | kFSCatInfoFinderXInfo | kFSCatInfoFinderInfo,
-                                     &info,
-                                     NULL,
-                                     NULL,
-                                     NULL);
-        
-        if (err != noErr)
-		{
-            NSLog(@"Unabled to get catalog info... %i", err);
-			return;
-		}
-        
-        /* Manipulate the Finder CatalogInfo */
-        UInt16 *flags = &((FileInfo*)(&info.finderInfo))->finderFlags;
-        
-        //To Turn off
-        // *flags &= kColor;
-        
-        /*
-         0 is off
-         1 is Grey
-         2 is Green
-         3 is Purple
-         4 is Blue
-         5 is Yellow
-         6 is Red
-         7 is Orange
-         */
-        
-        *flags = ( *flags &~ kColor) | ( (label << 1) & kColor );
-        
-        /* Set the Finder Catalog Info Back */
-        err = FSSetCatalogInfo(&par,
-                               kFSCatInfoContentMod | kFSCatInfoFinderXInfo | kFSCatInfoFinderInfo,
-                               &info);
-        
-        if (err != noErr)
-        {
-            NSLog(@"Unable to set catalog info... %i", err);
-            return;
-        }
-    }
-}
-
-- (QSObject *)setLabelForFile:(QSObject *)dObject to:(QSObject *)iObject{
-    NSString* path;
-	NSNumber *value=[iObject objectForType:QSNumericType];
-	if (!value) return nil;
-	NSInteger label=[value integerValue];
-	//NSLog(@"setlabel %d",label);
-    NSEnumerator *pathEnumerator=[dObject enumeratorForType:QSFilePathType];
-    while (path=[pathEnumerator nextObject]){
-		[self setLabel:label forPath:path];
-        [[NSWorkspace sharedWorkspace] noteFileSystemChanged:path];
-    }
-    return nil;
-}
-
 
 - (QSObject *)setIconForFile:(QSObject *)dObject to:(QSObject *)iObject{
 	NSWorkspace *w=[NSWorkspace sharedWorkspace];
