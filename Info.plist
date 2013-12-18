@@ -17,11 +17,74 @@
 	<key>CFBundlePackageType</key>
 	<string>BNDL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.1.0</string>
+	<string>2.0.0</string>
 	<key>CFBundleVersion</key>
-	<string>E5</string>
+	<string>E6</string>
 	<key>QSActions</key>
 	<dict>
+		<key>AddFileTags</key>
+		<dict>
+			<key>actionClass</key>
+			<string>QSFileTaggingAction</string>
+			<key>actionSelector</key>
+			<string>addToFiles:tagList:</string>
+			<key>directTypes</key>
+			<array>
+				<string>NSFilenamesPboardType</string>
+			</array>
+			<key>icon</key>
+			<string>TagIcon</string>
+			<key>indirectOptional</key>
+			<false/>
+			<key>indirectTypes</key>
+			<array>
+				<string>QSFileTag</string>
+				<string>NSStringPboardType</string>
+			</array>
+			<key>name</key>
+			<string>Add Tags…</string>
+		</dict>
+		<key>AddTagsToFiles</key>
+		<dict>
+			<key>actionClass</key>
+			<string>QSFileTaggingAction</string>
+			<key>actionSelector</key>
+			<string>addToFiles:tagList:</string>
+			<key>directTypes</key>
+			<array>
+				<string>QSFileTag</string>
+				<string>NSStringPboardType</string>
+			</array>
+			<key>icon</key>
+			<string>TagIcon</string>
+			<key>indirectOptional</key>
+			<false/>
+			<key>indirectTypes</key>
+			<array>
+				<string>NSFilenamesPboardType</string>
+			</array>
+			<key>name</key>
+			<string>Add to File…</string>
+			<key>reverseArguments</key>
+			<true/>
+			<key>validatesObjects</key>
+			<true/>
+		</dict>
+		<key>ClearFileTags</key>
+		<dict>
+			<key>actionClass</key>
+			<string>QSFileTaggingAction</string>
+			<key>actionSelector</key>
+			<string>clearTagsFromFiles:</string>
+			<key>directTypes</key>
+			<array>
+				<string>NSFilenamesPboardType</string>
+			</array>
+			<key>icon</key>
+			<string>TagIcon</string>
+			<key>name</key>
+			<string>Clear Tags</string>
+		</dict>
 		<key>QSClearCustomFileIconAction</key>
 		<dict>
 			<key>actionClass</key>
@@ -131,6 +194,64 @@
 			<key>validatesObjects</key>
 			<false/>
 		</dict>
+		<key>RemoveFileTags</key>
+		<dict>
+			<key>actionClass</key>
+			<string>QSFileTaggingAction</string>
+			<key>actionSelector</key>
+			<string>removeFromFiles:tags:</string>
+			<key>directTypes</key>
+			<array>
+				<string>NSFilenamesPboardType</string>
+			</array>
+			<key>icon</key>
+			<string>TagIcon</string>
+			<key>indirectOptional</key>
+			<false/>
+			<key>indirectTypes</key>
+			<array>
+				<string>QSFileTag</string>
+			</array>
+			<key>name</key>
+			<string>Remove Tags…</string>
+		</dict>
+		<key>SetFileTags</key>
+		<dict>
+			<key>actionClass</key>
+			<string>QSFileTaggingAction</string>
+			<key>actionSelector</key>
+			<string>setToFiles:tagList:</string>
+			<key>directTypes</key>
+			<array>
+				<string>NSFilenamesPboardType</string>
+			</array>
+			<key>icon</key>
+			<string>TagIcon</string>
+			<key>indirectOptional</key>
+			<false/>
+			<key>indirectTypes</key>
+			<array>
+				<string>QSFileTag</string>
+				<string>NSStringPboardType</string>
+			</array>
+			<key>name</key>
+			<string>Set Tags…</string>
+		</dict>
+		<key>ShowFileTags</key>
+		<dict>
+			<key>actionClass</key>
+			<string>QSFileTaggingAction</string>
+			<key>actionSelector</key>
+			<string>showTagsForFiles:</string>
+			<key>directTypes</key>
+			<array>
+				<string>NSFilenamesPboardType</string>
+			</array>
+			<key>icon</key>
+			<string>TagIcon</string>
+			<key>name</key>
+			<string>Show Tags</string>
+		</dict>
 	</dict>
 	<key>QSPlugIn</key>
 	<dict>
@@ -171,12 +292,95 @@ clear the colour label of a file, select 'None' in Quicksilver's 3rd pane.&lt;/p
 		<key>icon</key>
 		<string>GenericDocumentIcon</string>
 	</dict>
+	<key>QSPresetAdditions</key>
+	<array>
+		<dict>
+			<key>ID</key>
+			<string>QSPresetFileTags</string>
+			<key>enabled</key>
+			<true/>
+			<key>icon</key>
+			<string>TagIcon</string>
+			<key>name</key>
+			<string>File Tags</string>
+			<key>source</key>
+			<string>QSFileTagSource</string>
+		</dict>
+	</array>
 	<key>QSRegistration</key>
 	<dict>
 		<key>QSActionProviders</key>
 		<dict>
 			<key>QSHFSAttributeActions</key>
 			<string>QSHFSAttributeActions</string>
+		</dict>
+		<key>QSObjectHandlers</key>
+		<dict>
+			<key>QSFileTag</key>
+			<string>QSFileTagSource</string>
+		</dict>
+		<key>QSObjectSources</key>
+		<dict>
+			<key>QSFileTagSource</key>
+			<string>QSFileTagSource</string>
+			<key>Tagged Files</key>
+			<string>QSTaggedFilesSource</string>
+		</dict>
+		<key>QSTriggerEvents</key>
+		<dict>
+			<key>QSFileTagged</key>
+			<dict>
+				<key>allowMatching</key>
+				<true/>
+				<key>icon</key>
+				<string>TagIcon</string>
+				<key>name</key>
+				<string>File Tagged</string>
+				<key>provider</key>
+				<string>QSFileTaggingAction</string>
+				<key>type</key>
+				<string>File Tagging</string>
+			</dict>
+			<key>QSFileTagsCleared</key>
+			<dict>
+				<key>allowMatching</key>
+				<true/>
+				<key>icon</key>
+				<string>TagIcon</string>
+				<key>name</key>
+				<string>File Tags Cleared</string>
+				<key>provider</key>
+				<string>QSFileTaggingAction</string>
+				<key>type</key>
+				<string>File Tagging</string>
+			</dict>
+		</dict>
+		<key>QSTypeDefinitions</key>
+		<dict>
+			<key>QSFileTag</key>
+			<dict>
+				<key>icon</key>
+				<string>TagIcon</string>
+				<key>name</key>
+				<string>File Tags</string>
+			</dict>
+		</dict>
+	</dict>
+	<key>QSRequirements</key>
+	<dict>
+		<key>os</key>
+		<string>10.9.0</string>
+		<key>version</key>
+		<string>4008</string>
+	</dict>
+	<key>QSResourceAdditions</key>
+	<dict>
+		<key>TagIcon</key>
+		<dict>
+			<key>bundle</key>
+			<string>com.blacktree.Quicksilver.QSFileAttributesPlugIn</string>
+			<key>resource</key>
+			<string>Tag.png</string>
 		</dict>
 	</dict>
 </dict>
