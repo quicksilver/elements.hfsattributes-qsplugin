@@ -247,7 +247,7 @@
 			<string>Files</string>
 		</array>
 		<key>description</key>
-		<string>File locking, labeling and visibility actions</string>
+		<string>File tagging, locking, and visibility</string>
 		<key>extendedDescription</key>
 		<string>&lt;h1&gt;File Attribute Plugin&lt;/h1&gt;
 &lt;p&gt;The File Attribute Actions plugin adds actions to Quicksilver that enable you to alter the attributes of system files on your computer. This includes tagging, altering the visibility of files and folders, locking files and folders, and setting icons of files.&lt;/p&gt;
