@@ -1,6 +1,4 @@
-
-
-#import <Foundation/Foundation.h>
+// HFS Attribute Actions
 
 @interface QSHFSAttributeActions : QSActionProvider {
 

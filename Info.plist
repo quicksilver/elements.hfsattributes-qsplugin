@@ -5,9 +5,9 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleDisplayName</key>
-	<string>File Attribute Plugin</string>
+	<string>File Attribute</string>
 	<key>CFBundleExecutable</key>
-	<string>File Attribute Actions</string>
+	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.blacktree.Quicksilver.QSFileAttributesPlugIn</string>
 	<key>CFBundleInfoDictionaryVersion</key>
@@ -17,11 +17,74 @@
 	<key>CFBundlePackageType</key>
 	<string>BNDL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.1.0</string>
+	<string>2.0.0</string>
 	<key>CFBundleVersion</key>
-	<string>E5</string>
+	<string>E8</string>
 	<key>QSActions</key>
 	<dict>
+		<key>AddFileTags</key>
+		<dict>
+			<key>actionClass</key>
+			<string>QSFileTaggingAction</string>
+			<key>actionSelector</key>
+			<string>addToFiles:tagList:</string>
+			<key>directTypes</key>
+			<array>
+				<string>NSFilenamesPboardType</string>
+			</array>
+			<key>icon</key>
+			<string>TagIcon</string>
+			<key>indirectOptional</key>
+			<false/>
+			<key>indirectTypes</key>
+			<array>
+				<string>QSFileTag</string>
+				<string>NSStringPboardType</string>
+			</array>
+			<key>name</key>
+			<string>Add Tags…</string>
+		</dict>
+		<key>AddTagsToFiles</key>
+		<dict>
+			<key>actionClass</key>
+			<string>QSFileTaggingAction</string>
+			<key>actionSelector</key>
+			<string>addToFiles:tagList:</string>
+			<key>directTypes</key>
+			<array>
+				<string>QSFileTag</string>
+				<string>NSStringPboardType</string>
+			</array>
+			<key>icon</key>
+			<string>TagIcon</string>
+			<key>indirectOptional</key>
+			<false/>
+			<key>indirectTypes</key>
+			<array>
+				<string>NSFilenamesPboardType</string>
+			</array>
+			<key>name</key>
+			<string>Add to File…</string>
+			<key>reverseArguments</key>
+			<true/>
+			<key>validatesObjects</key>
+			<true/>
+		</dict>
+		<key>ClearFileTags</key>
+		<dict>
+			<key>actionClass</key>
+			<string>QSFileTaggingAction</string>
+			<key>actionSelector</key>
+			<string>clearTagsFromFiles:</string>
+			<key>directTypes</key>
+			<array>
+				<string>NSFilenamesPboardType</string>
+			</array>
+			<key>icon</key>
+			<string>TagIcon</string>
+			<key>name</key>
+			<string>Clear Tags</string>
+		</dict>
 		<key>QSClearCustomFileIconAction</key>
 		<dict>
 			<key>actionClass</key>
@@ -84,21 +147,6 @@
 			<key>validatesObjects</key>
 			<true/>
 		</dict>
-		<key>QSHFSSetLabelAction</key>
-		<dict>
-			<key>actionClass</key>
-			<string>QSHFSAttributeActions</string>
-			<key>actionSelector</key>
-			<string>setLabelForFile:to:</string>
-			<key>directTypes</key>
-			<array>
-				<string>NSFilenamesPboardType</string>
-			</array>
-			<key>name</key>
-			<string>Set Label...</string>
-			<key>validatesObjects</key>
-			<false/>
-		</dict>
 		<key>QSHFSUnlockAction</key>
 		<dict>
 			<key>actionClass</key>
@@ -127,9 +175,67 @@
 			<key>icon</key>
 			<string>com.apple.finder</string>
 			<key>name</key>
-			<string>Set Icon...</string>
+			<string>Set Icon…</string>
 			<key>validatesObjects</key>
 			<false/>
+		</dict>
+		<key>RemoveFileTags</key>
+		<dict>
+			<key>actionClass</key>
+			<string>QSFileTaggingAction</string>
+			<key>actionSelector</key>
+			<string>removeFromFiles:tags:</string>
+			<key>directTypes</key>
+			<array>
+				<string>NSFilenamesPboardType</string>
+			</array>
+			<key>icon</key>
+			<string>TagIcon</string>
+			<key>indirectOptional</key>
+			<false/>
+			<key>indirectTypes</key>
+			<array>
+				<string>QSFileTag</string>
+			</array>
+			<key>name</key>
+			<string>Remove Tags…</string>
+		</dict>
+		<key>SetFileTags</key>
+		<dict>
+			<key>actionClass</key>
+			<string>QSFileTaggingAction</string>
+			<key>actionSelector</key>
+			<string>setToFiles:tagList:</string>
+			<key>directTypes</key>
+			<array>
+				<string>NSFilenamesPboardType</string>
+			</array>
+			<key>icon</key>
+			<string>TagIcon</string>
+			<key>indirectOptional</key>
+			<false/>
+			<key>indirectTypes</key>
+			<array>
+				<string>QSFileTag</string>
+				<string>NSStringPboardType</string>
+			</array>
+			<key>name</key>
+			<string>Set Tags…</string>
+		</dict>
+		<key>ShowFileTags</key>
+		<dict>
+			<key>actionClass</key>
+			<string>QSFileTaggingAction</string>
+			<key>actionSelector</key>
+			<string>showTagsForFiles:</string>
+			<key>directTypes</key>
+			<array>
+				<string>NSFilenamesPboardType</string>
+			</array>
+			<key>icon</key>
+			<string>TagIcon</string>
+			<key>name</key>
+			<string>Show Tags</string>
 		</dict>
 	</dict>
 	<key>QSPlugIn</key>
@@ -141,44 +247,145 @@
 			<string>Files</string>
 		</array>
 		<key>description</key>
-		<string>File locking, labeling and visibility actions</string>
+		<string>File tagging, locking, and visibility</string>
 		<key>extendedDescription</key>
-		<string>&lt;h2&gt;File Attribute Actions&lt;/h2&gt;
-
-&lt;p&gt;The File Attribute Actions plugin adds actions to Quicksilver that enable you to alter the attributes of system files on your computer. This includes, altering the visibility of files and folders, locking files and folders, and setting labels, comments and icons of files.&lt;/p&gt;
-
+		<string>&lt;h1&gt;File Attribute Plugin&lt;/h1&gt;
+&lt;p&gt;The File Attribute Actions plugin adds actions to Quicksilver that enable you to alter the attributes of system files on your computer. This includes tagging, altering the visibility of files and folders, locking files and folders, and setting icons of files.&lt;/p&gt;
+&lt;p&gt;The tagging features provide an interface for adding and removing tags on files, as well as browsing tags and finding all files with a certain tag or tags.&lt;/p&gt;
 &lt;h2&gt;Actions&lt;/h2&gt;
-
-&lt;h3&gt;Lock/Unlock File&lt;/h3&gt;
-
-&lt;p&gt;These actions lock or unlock the file(s) in Quicksilver&apos;s 1st pane. Locking a file is equivalent to ticking the &apos;Lock&apos; checkbox in the &apos;Get Info&apos; panel of a file, and makes the file or folder read only.&lt;br /&gt;
-This action works with the &apos;&lt;a href=&quot;http://qsapp.com/wiki/Comma_Trick&quot;&gt;comma trick&lt;/a&gt;&apos;.&lt;/p&gt;
-
-&lt;h3&gt;Make Visible (show) &amp; Make Invisible (hide)&lt;/h3&gt;
-
-&lt;p&gt;These actions alter the display of files or folders within Finder. Making an item invisible means it does not display in Finder. An example of an invisible folder is the &lt;code&gt;~/Library&lt;/code&gt; folder. Works with the &apos;comma trick&apos;.&lt;/p&gt;
-
-
-&lt;h3&gt;Set Icon...&lt;/h3&gt;
-
-&lt;p&gt;Allows you to alter the icon that is displayed by Finder for the file or folder. To un-set an icon, open the file in Finder and select &apos;Get Info&apos; (⌘I). From here you can &apos;delete&apos; the icon. Works with the &apos;comma trick&apos;.&lt;/p&gt;
-
-&lt;h3&gt;Clear Custom Icon&lt;/h3&gt;
-
-&lt;p&gt;Clears the custom icon set for the selected file(s). Works with the &apos;comma trick&apos;.&lt;/p&gt;
-
-&lt;h3&gt;Set Label...&lt;/h3&gt;
-
-&lt;p&gt;Sets the Finder label to the specified colour in Quicksilver&apos;s 3rd pane. To clear the colour label of a file, select &apos;None&apos; in Quicksilver&apos;s 3rd pane.&lt;/p&gt;</string>
+&lt;dl&gt;
+&lt;dt&gt;Add Tags…&lt;/dt&gt;
+&lt;dd&gt;Add tags to the selected file(s).&lt;/dd&gt;
+&lt;dt&gt;Add to File…&lt;/dt&gt;
+&lt;dd&gt;Apply the selected tag to one or more files in the third pane.&lt;/dd&gt;
+&lt;dt&gt;Set Tags…&lt;/dt&gt;
+&lt;dd&gt;Apply tags to the selected file(s), replacing any existing tags.&lt;/dd&gt;
+&lt;dt&gt;Remove Tags…&lt;/dt&gt;
+&lt;dd&gt;Remove specific tags from the selected file(s).&lt;/dd&gt;
+&lt;dt&gt;Show Tags&lt;/dt&gt;
+&lt;dd&gt;Show a list of tags currently assigned to the selected file(s).&lt;/dd&gt;
+&lt;dt&gt;Clear Tags&lt;/dt&gt;
+&lt;dd&gt;Remove all tags from the selected file(s).&lt;/dd&gt;
+&lt;dt&gt;Lock/Unlock File&lt;/dt&gt;
+&lt;dd&gt;These actions lock or unlock the file(s) in Quicksilver's 1st pane. Locking a file is equivalent to ticking the 'Lock' checkbox in the 'Get Info' panel of a file, and makes the file or folder read only.&lt;/dd&gt;
+&lt;dt&gt;Make Visible (show) &amp;amp; Make Invisible (hide)&lt;/dt&gt;
+&lt;dd&gt;These actions alter the display of files or folders within Finder. Making an item invisible means it does not display in Finder. An example of an invisible folder is the &lt;code&gt;~/Library&lt;/code&gt; folder.&lt;/dd&gt;
+&lt;dt&gt;Set Icon…&lt;/dt&gt;
+&lt;dd&gt;Allows you to alter the icon that is displayed by Finder for the file or folder. To un-set an icon, open the file in Finder and select 'Get Info' (⌘I). From here you can 'delete' the icon.&lt;/dd&gt;
+&lt;dt&gt;Clear Custom Icon&lt;/dt&gt;
+&lt;dd&gt;Clears the custom icon set for the selected file(s).&lt;/dd&gt;
+&lt;/dl&gt;
+&lt;h2&gt;Catalog&lt;/h2&gt;
+&lt;p&gt;The plugin adds all of the user’s tags to Quicksilver’s catalog. A tag in Quicksilver is treated like a folder: its children are its contents, accessed by drilling down into the tag with → or /. A tag’s contents consist of all files tagged with it, plus every other tag belonging to these files.&lt;/p&gt;
+&lt;h3&gt;Custom Entries&lt;/h3&gt;
+&lt;p&gt;You can add files to the catalog if they match one or more tags.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Add a new custom catalog entry using the &lt;code&gt;+&lt;/code&gt; at the bottom of the Catalog preferences.&lt;/li&gt;
+&lt;li&gt;Select “Tagged Files” from the pop-up menu.&lt;/li&gt;
+&lt;li&gt;Enter one or more tags in the token field.&lt;/li&gt;
+&lt;li&gt;Optionally, change the name of the entry in the list.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Files matching all listed tags will be included in the global catalog.&lt;/p&gt;
+&lt;h2&gt;Search&lt;/h2&gt;
+&lt;p&gt;Use Quicksilver to search for files by tag. Drill down into a tag (with → or /) to see an alphabetical listing of all files so tagged. At the end of this list is a list of the other tags for these files. Refine your search by drilling down into one of these tags and filter even further. With this mechanism you can arbitrarily extend a query to involve any number of tags.&lt;/p&gt;
+&lt;p&gt;For example, to see all files tagged with the tag “foo,” bring up the “foo” tag and drill down into it. Say some of these files are also tagged with “bar,” and still others, “baz”; these two will be listed at the bottom, after the list of files. Drilling down into one will further filter the results to only show files with &lt;em&gt;both&lt;/em&gt; tags (files tagged with “foo” and “bar” or files tagged with “foo” and “baz”). Drilling up out of these results reverts to showing all files tagged with just “foo”.&lt;/p&gt;
+&lt;p&gt;When performing such a compound tag query, you can keep track of the current search by looking at a possible tag’s value: filtering files tagged with “foo” and then “bar” will show the second tag as “foo + bar” in the command window. (Note: If your Quicksilver catalog contains Recent Objects, these compound tag lists will be included, and this may not be the browsing behavior you desire.)&lt;/p&gt;
+&lt;h2&gt;Working with Tags&lt;/h2&gt;
+&lt;p&gt;All of the expected tagging actions are made available by the plugin. Users can add tags to files, remove tags from files, set the tags of files to a different set, clear all tags from files, and show the tags of files. These actions can be performed on a single file or multiple files, thanks to Quicksilver’s multiple selection support using the comma key. Tags can be added to or removed from multiple files at a time, and the user can show all the tags that a group of files has in common. Showing the tags for a file or files will bring up a list of the tags in the Quicksilver’s direct object pane, ready to be explored. A similar interface is used for removing tags from files, presenting a list of that file’s current tags (or shared tags for multiple files).&lt;/p&gt;
+&lt;p&gt;In addition to operating on multiple files, you can use multiple tags in an operation. A list of appropriate tags should appear in the third pane. You can enter a new tag by switching to text-entry mode. Multiple tags can be selected with the comma trick or entered in text-entry mode by separating them with commas.&lt;/p&gt;
+&lt;p&gt;Tags can contain almost anything other than comma.&lt;/p&gt;</string>
 		<key>icon</key>
 		<string>GenericDocumentIcon</string>
 	</dict>
+	<key>QSPresetAdditions</key>
+	<array>
+		<dict>
+			<key>ID</key>
+			<string>QSPresetFileTags</string>
+			<key>enabled</key>
+			<true/>
+			<key>icon</key>
+			<string>TagIcon</string>
+			<key>name</key>
+			<string>File Tags</string>
+			<key>source</key>
+			<string>QSFileTagSource</string>
+		</dict>
+	</array>
 	<key>QSRegistration</key>
 	<dict>
 		<key>QSActionProviders</key>
 		<dict>
 			<key>QSHFSAttributeActions</key>
 			<string>QSHFSAttributeActions</string>
+		</dict>
+		<key>QSObjectHandlers</key>
+		<dict>
+			<key>QSFileTag</key>
+			<string>QSFileTagSource</string>
+		</dict>
+		<key>QSObjectSources</key>
+		<dict>
+			<key>QSFileTagSource</key>
+			<string>QSFileTagSource</string>
+			<key>Tagged Files</key>
+			<string>QSTaggedFilesSource</string>
+		</dict>
+		<key>QSTriggerEvents</key>
+		<dict>
+			<key>QSFileTagged</key>
+			<dict>
+				<key>allowMatching</key>
+				<true/>
+				<key>icon</key>
+				<string>TagIcon</string>
+				<key>name</key>
+				<string>File Tagged</string>
+				<key>provider</key>
+				<string>QSFileTaggingAction</string>
+				<key>type</key>
+				<string>File Tagging</string>
+			</dict>
+			<key>QSFileTagsCleared</key>
+			<dict>
+				<key>allowMatching</key>
+				<true/>
+				<key>icon</key>
+				<string>TagIcon</string>
+				<key>name</key>
+				<string>File Tags Cleared</string>
+				<key>provider</key>
+				<string>QSFileTaggingAction</string>
+				<key>type</key>
+				<string>File Tagging</string>
+			</dict>
+		</dict>
+		<key>QSTypeDefinitions</key>
+		<dict>
+			<key>QSFileTag</key>
+			<dict>
+				<key>icon</key>
+				<string>TagIcon</string>
+				<key>name</key>
+				<string>File Tags</string>
+			</dict>
+		</dict>
+	</dict>
+	<key>QSRequirements</key>
+	<dict>
+		<key>os</key>
+		<string>10.9.0</string>
+		<key>version</key>
+		<string>4008</string>
+	</dict>
+	<key>QSResourceAdditions</key>
+	<dict>
+		<key>TagIcon</key>
+		<dict>
+			<key>bundle</key>
+			<string>com.blacktree.Quicksilver.QSFileAttributesPlugIn</string>
+			<key>resource</key>
+			<string>Tag.png</string>
 		</dict>
 	</dict>
 </dict>
