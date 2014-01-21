@@ -104,8 +104,14 @@ NSString *const kFileTaggingXAttrKeyword = @"com.apple.metadata:_kMDItemUserTags
 - (void)removeTags:(NSArray *)tags fromFile:(NSString *)filePath
 {
     NSMutableArray *allTags = [NSMutableArray arrayWithArray:[self tagNamesForFile:filePath]];
-    [allTags removeObjectsInArray:tags];
-    [self setTags:allTags forFile:filePath];
+    if ([allTags count]) {
+        [allTags removeObjectsInArray:tags];
+        [self setTags:allTags forFile:filePath];
+    } else {
+        // no tags to remove
+        // user typed an invalid tag in text-entry mode to get here
+        NSBeep();
+    }
 }
 
 - (void)setTags:(NSArray *)tags forFile:(NSString *)filePath
