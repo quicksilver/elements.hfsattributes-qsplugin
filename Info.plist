@@ -17,9 +17,9 @@
 	<key>CFBundlePackageType</key>
 	<string>BNDL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>2.0.1</string>
+	<string>2.0.2</string>
 	<key>CFBundleVersion</key>
-	<string>E9</string>
+	<string>EA</string>
 	<key>QSActions</key>
 	<dict>
 		<key>AddFileTags</key>
@@ -373,7 +373,7 @@
 	</dict>
 	<key>QSRequirements</key>
 	<dict>
-		<key>os</key>
+		<key>osRequired</key>
 		<string>10.9.0</string>
 		<key>version</key>
 		<string>4008</string>
