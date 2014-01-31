@@ -293,7 +293,9 @@
 &lt;h2&gt;Working with Tags&lt;/h2&gt;
 &lt;p&gt;All of the expected tagging actions are made available by the plugin. Users can add tags to files, remove tags from files, set the tags of files to a different set, clear all tags from files, and show the tags of files. These actions can be performed on a single file or multiple files, thanks to Quicksilver’s multiple selection support using the comma key. Tags can be added to or removed from multiple files at a time, and the user can show all the tags that a group of files has in common. Showing the tags for a file or files will bring up a list of the tags in the Quicksilver’s direct object pane, ready to be explored. A similar interface is used for removing tags from files, presenting a list of that file’s current tags (or shared tags for multiple files).&lt;/p&gt;
 &lt;p&gt;In addition to operating on multiple files, you can use multiple tags in an operation. A list of appropriate tags should appear in the third pane. You can enter a new tag by switching to text-entry mode. Multiple tags can be selected with the comma trick or entered in text-entry mode by separating them with commas.&lt;/p&gt;
-&lt;p&gt;Tags can contain almost anything other than comma.&lt;/p&gt;</string>
+&lt;p&gt;Tags can contain almost anything other than comma.&lt;/p&gt;
+&lt;h2&gt;Event Triggers&lt;/h2&gt;
+&lt;p&gt;If the Event Triggers plug-in is installed, you can configure actions to run when tags are modified or cleared via Quicksilver. The Event Trigger Object proxy will refer to the file(s) affected.&lt;/p&gt;</string>
 		<key>icon</key>
 		<string>GenericDocumentIcon</string>
 	</dict>
@@ -340,7 +342,7 @@
 				<key>icon</key>
 				<string>TagIcon</string>
 				<key>name</key>
-				<string>File Tagged</string>
+				<string>File Tagged ☿</string>
 				<key>provider</key>
 				<string>QSFileTaggingAction</string>
 				<key>type</key>
@@ -353,7 +355,7 @@
 				<key>icon</key>
 				<string>TagIcon</string>
 				<key>name</key>
-				<string>File Tags Cleared</string>
+				<string>File Tags Cleared ☿</string>
 				<key>provider</key>
 				<string>QSFileTaggingAction</string>
 				<key>type</key>

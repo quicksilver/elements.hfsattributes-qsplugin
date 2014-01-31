@@ -66,3 +66,7 @@ All of the expected tagging actions are made available by the plugin. Users can 
 In addition to operating on multiple files, you can use multiple tags in an operation. A list of appropriate tags should appear in the third pane. You can enter a new tag by switching to text-entry mode. Multiple tags can be selected with the comma trick or entered in text-entry mode by separating them with commas.
 
 Tags can contain almost anything other than comma.
+
+## Event Triggers ##
+
+If the Event Triggers plug-in is installed, you can configure actions to run when tags are modified or cleared via Quicksilver. The Event Trigger Object proxy will refer to the file(s) affected.
