@@ -184,7 +184,7 @@ NSString *const kFileTaggingXAttrKeyword = @"com.apple.metadata:_kMDItemUserTags
         MDItemRef item = (MDItemRef)MDQueryGetResultAtIndex(query, i);
         NSString *name = (NSString*)MDItemCopyAttribute(item, kMDItemFSName);
         NSString *path = (NSString*)MDItemCopyAttribute(item, kMDItemPath);
-        QSObject *file = [QSObject objectWithType:NSFilenamesPboardType value:path name:name];
+        QSObject *file = [QSObject objectWithType:QSFilePathType value:path name:name];
         [files addObject:file];
     } copy] autorelease];
 }

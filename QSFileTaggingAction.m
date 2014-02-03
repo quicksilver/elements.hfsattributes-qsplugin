@@ -20,7 +20,7 @@
 {
     NSMutableSet *tagNames = [NSMutableSet set];
     for(QSObject *object in [files splitObjects]) {
-        NSSet *nextTags = [NSSet setWithArray:[[FileTaggingHandler sharedHandler] tagNamesForFile:[object objectForType:NSFilenamesPboardType]]];
+        NSSet *nextTags = [NSSet setWithArray:[[FileTaggingHandler sharedHandler] tagNamesForFile:[object objectForType:QSFilePathType]]];
         if([tagNames count]) {
             [tagNames intersectSet:nextTags];
         } else {
@@ -53,7 +53,7 @@
     QSObject *tagsToAdd = [self tagObjectFromMixedObject:tagList];
     NSArray *tagNames = [tagsToAdd arrayForType:kQSFileTag];
     for(QSObject *file in [files splitObjects]) {
-        [[FileTaggingHandler sharedHandler] addTags:tagNames toFile:[file objectForType:NSFilenamesPboardType]];
+        [[FileTaggingHandler sharedHandler] addTags:tagNames toFile:[file objectForType:QSFilePathType]];
     }
     [[NSNotificationCenter defaultCenter] postNotificationName:@"QSEventNotification" object:@"QSFileTagged" userInfo:@{@"object": files}];
     [self addCatalogTags:tagsToAdd];
@@ -67,7 +67,7 @@
         [tagNames addObject:[tag objectForType:kQSFileTag]];
     }
     for(QSObject *file in [files splitObjects]) {
-        [[FileTaggingHandler sharedHandler] removeTags:tagNames fromFile:[file objectForType:NSFilenamesPboardType]];
+        [[FileTaggingHandler sharedHandler] removeTags:tagNames fromFile:[file objectForType:QSFilePathType]];
     }
     [self updateTagsOnDisk];
     return nil;
@@ -79,7 +79,7 @@
     NSArray *tagNames = [tagsToSet arrayForType:kQSFileTag];
     FileTaggingHandler *tagHandler = [FileTaggingHandler sharedHandler];
     for(QSObject *file in [files splitObjects]) {
-        [tagHandler setTags:tagNames forFile:[file objectForType:NSFilenamesPboardType]];
+        [tagHandler setTags:tagNames forFile:[file objectForType:QSFilePathType]];
     }
     if (tagList) {
         [[NSNotificationCenter defaultCenter] postNotificationName:@"QSEventNotification" object:@"QSFileTagged" userInfo:@{@"object": files}];
@@ -92,7 +92,7 @@
 {
     FileTaggingHandler *tagHandler = [FileTaggingHandler sharedHandler];
     for (QSObject *file in [files splitObjects]) {
-        [tagHandler setTags:@[] forFile:[file objectForType:NSFilenamesPboardType]];
+        [tagHandler setTags:@[] forFile:[file objectForType:QSFilePathType]];
     }
     [[NSNotificationCenter defaultCenter] postNotificationName:@"QSEventNotification" object:@"QSFileTagsCleared" userInfo:@{@"object": files}];
     [self updateTagsOnDisk];
