@@ -96,9 +96,9 @@ NSString *const kFileTaggingXAttrKeyword = @"com.apple.metadata:_kMDItemUserTags
 
 - (void)addTags:(NSArray *)tags toFile:(NSString *)filePath
 {
-    NSMutableArray *allTags = [NSMutableArray arrayWithArray:[self tagNamesForFile:filePath]];
+    NSMutableSet *allTags = [NSMutableSet setWithArray:[self tagNamesForFile:filePath]];
     [allTags addObjectsFromArray:tags];
-    [self setTags:allTags forFile:filePath];
+    [self setTags:[allTags allObjects] forFile:filePath];
 }
 
 - (void)removeTags:(NSArray *)tags fromFile:(NSString *)filePath
@@ -184,7 +184,7 @@ NSString *const kFileTaggingXAttrKeyword = @"com.apple.metadata:_kMDItemUserTags
         MDItemRef item = (MDItemRef)MDQueryGetResultAtIndex(query, i);
         NSString *name = (NSString*)MDItemCopyAttribute(item, kMDItemFSName);
         NSString *path = (NSString*)MDItemCopyAttribute(item, kMDItemPath);
-        QSObject *file = [QSObject objectWithType:NSFilenamesPboardType value:path name:name];
+        QSObject *file = [QSObject objectWithType:QSFilePathType value:path name:name];
         [files addObject:file];
     } copy] autorelease];
 }
