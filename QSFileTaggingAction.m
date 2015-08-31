@@ -162,7 +162,7 @@
     // wait a few seconds for changes to appear in the filesystem
     sleep(4);
     // rescan the catalog entry
-    [[NSNotificationCenter defaultCenter] postNotificationName:QSCatalogEntryInvalidated object:kQSFileTagsPreset];
+    [[NSNotificationCenter defaultCenter] postNotificationName:QSCatalogEntryInvalidatedNotification object:kQSFileTagsPreset];
 }
 
 - (QSObject *)tagObjectFromMixedObject:(QSObject *)inputTags
