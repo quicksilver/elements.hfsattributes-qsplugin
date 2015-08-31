@@ -17,9 +17,9 @@
 	<key>CFBundlePackageType</key>
 	<string>BNDL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>2.0.5</string>
+	<string>2.0.6</string>
 	<key>CFBundleVersion</key>
-	<string>ED</string>
+	<string>EF</string>
 	<key>QSActions</key>
 	<dict>
 		<key>AddFileTags</key>
